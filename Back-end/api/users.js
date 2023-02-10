@@ -8,39 +8,27 @@ router.get('/', function(req, res, next) {
 });
 
 /* POST login user*/
-router.post('/login', function(req, res, next) {
+router.post('/login', async function(req, res, next) {
 
   try {
 
-    var result = userServices.login(req, res);
-    switch (result) {
-      case 400:
-        res.send("Enter email and password");
-        break;
-      case 200:
-        res.send("Login successfuly");
-    }
+    var result = await userServices.login(req, res);
+    res.status(result.code).send(result.message);
 
-  }catch (e) {
+   }catch (e) {
     console.log(e);
   }
 
 });
 
 /* POST register user*/
-router.post('/register', function(req, res, next) {
+router.post('/register',async function(req, res, next) {
 
   try {
 
-    var result = userServices.register(req, res);
+    var result = await userServices.register(req, res);
 
-    switch (result) {
-      case 400:
-        res.send("Enter email and password");
-        break;
-      case 200:
-        res.send("Login successfuly");
-    }
+    res.status(result.code).send(result.message);
 
   }catch (e) {
     console.log(e);

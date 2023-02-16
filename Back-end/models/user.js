@@ -15,7 +15,13 @@ const UserSchema = new Schema({
     password: {
         type: String,
         required: true,
-    }
+    },
+    authTokens: [{
+        token: {
+            type: String,
+            required: true
+        }
+    }]
 });
 
 UserSchema.set('toJSON', {

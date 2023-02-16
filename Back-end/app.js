@@ -4,7 +4,10 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
+var cookieParser = require('cookie-parser');
+
 var usersRouter = require('./api/users');
+var contentRouter = require('./api/contents');
 
 var app = express();
 
@@ -19,11 +22,16 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(cors());
+app.use(cookieParser());
+
 
 app.use('/users', usersRouter);
+app.use('/contents', contentRouter);
 
-// add env variable
+
+// add env variableSESSION_SECRET
 require('dotenv').config({path: __dirname + '/config/.env'})
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

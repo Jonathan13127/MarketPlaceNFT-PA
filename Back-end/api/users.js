@@ -10,8 +10,9 @@ router.post('/login', async function(req, res, next) {
   try {
 
     var result = await userServices.login(req, res);
+    console.log(result);
 
-    res.status(result.code).send(result.message);
+    res.status(result.code).send({response : result.message});
 
    }catch (e) {
     console.log(e);
@@ -20,19 +21,12 @@ router.post('/login', async function(req, res, next) {
 });
 
 /* POST logout user*/
-router.post('/logout',auth, async function(req, res, next) {
+router.post('/logout', auth, async function(req, res, next) {
   try {
-    
-    req.user.authTokens = req.user.authTokens.filter((token) => {
-      return token.token !== req.token;
-    });
 
-    await req.user.save();
+      var result = await userServices.logout(req,res);
 
-    // var result = await userServices.logout(req, res);
-
-    // res.status(result.code).send(result.message);
-    res.send("Logout");
+    res.status(result.code).send({response : result.message});
 
   } catch (error) {
     res.status(500);
@@ -47,7 +41,7 @@ router.post('/register',async function(req, res, next) {
 
     var result = await userServices.register(req, res);
 
-    res.status(result.code).send(result.message);
+    res.status(result.code).send({response : result.message});
 
     //res.cookie('email', result.cookie).status(result.code).send(result.message);
 
@@ -66,21 +60,27 @@ router.get('/me', auth, async function(req, res, next) {
   }
 });
 
+router.get('/validateToken', auth, async function(req, res, next) {
+  try {
+    res.send({valid: true});
+  } catch (e) {
+    res.status(500);
+  }
+});
 
 /* GET Info user*/
-router.get('/:username', auth, async function(req, res, next) {
+router.get('/getUser/:username', auth, async function(req, res, next) {
   try {
 
     var username = req.params.username;
 
     var result = await userServices.getUser(username);
 
-    res.status(result.code).send(result.message);
+    res.status(result.code).send({response : result.message});
   }catch (e) {
     res.status(500);
   }
   
 });
-
 
 module.exports = router;

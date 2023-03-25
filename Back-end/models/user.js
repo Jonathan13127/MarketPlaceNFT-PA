@@ -30,7 +30,7 @@ UserSchema.set('toJSON', {
         delete returnedObject._id
         delete returnedObject.__v
         //do not reveal passwordHash
-        delete returnedObject.authTokens
+        //delete returnedObject.authTokens
         delete returnedObject.password
     }
 })

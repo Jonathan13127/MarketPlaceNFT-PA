@@ -2,6 +2,8 @@ const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 var tokenServices = require('./token_services');
 var validator = require('validator');
+const jwt = require('jsonwebtoken');
+
 
 module.exports = {
 
@@ -10,6 +12,7 @@ module.exports = {
 
         var email = req.body.email;
         var password = req.body.password;
+        console.log(req.cookies["token"])
 
         if (!email || !password) {
             return { "code": 400, "message": "Enter email and password" };
@@ -106,8 +109,6 @@ module.exports = {
             Minimum 12 characters, 1 lowercase, 1 uppercase, 1 number and 1 special character`};
         }
 
-        // const hashedPassword = await bcrypt.hash(password, 13); // !!!!!!!!!!!!  HASHÉ LA PASSWORD COTÉ CLIENT
-
         const newUser = new User({ username, email, password: password });
 
         const data = { id: newUser._id, username: newUser.username };
@@ -119,6 +120,19 @@ module.exports = {
 
         const message = { "message": "User registered successfully", "token": token };
 
+        return { "code": 200, "message": message };
+    },
+
+    // Delete an user account
+    deleteAccount: async function (req, res) {
+
+        const token = req.header('authorization');
+
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+        await User.findByIdAndDelete(decoded.user.id)
+
+        var message = "Votre compte a été supprimé."
         return { "code": 200, "message": message };
     },
 

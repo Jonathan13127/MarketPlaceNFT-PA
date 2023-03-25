@@ -19,7 +19,7 @@ router.post('/register', async function (req, res, next) {
 });
 
 /* POST delete an user account*/
-router.post('/deleteAccount', async function (req, res, next) {
+router.post('/deleteAccount',auth, async function (req, res, next) {
 
   try {
 

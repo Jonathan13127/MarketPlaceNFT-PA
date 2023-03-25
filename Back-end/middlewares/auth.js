@@ -12,7 +12,7 @@ const auth = async (req, res, next) => {
         const user = await User.findOne({ _id: decoded.user.id, 'authTokens.token': token });
         
         if (!user) {
-            res.status(401).json({ msg: 'Merci de vous connecter.' });
+            res.status(401).json({ msg: 'Merci de vous connecter ou aucun compte trouvé.' });
             res.end();
         }
 

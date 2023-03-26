@@ -9,6 +9,10 @@ router.post('/register', async function (req, res, next) {
   try {
 
     var result = await userServices.register(req, res);
+    
+    res.header('Access-Control-Allow-Credentials', 'true');
+
+    res.cookie('access_token', result.message.token, { maxAge: 24 * 60 * 60 * 1000 });
 
     res.status(result.code).send({ response: result.message });
 
@@ -19,7 +23,7 @@ router.post('/register', async function (req, res, next) {
 });
 
 /* POST delete an user account*/
-router.post('/deleteAccount',auth, async function (req, res, next) {
+router.delete('/deleteAccount',auth, async function (req, res, next) {
 
   try {
 

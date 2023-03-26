@@ -1,7 +1,6 @@
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
-var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
 var cookieParser = require('cookie-parser');
@@ -20,7 +19,23 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(cors());
+
+const whiteList = ["http://localhost:3000","https://localhost:3000"]
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (whiteList.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['POST', 'PUT', 'GET', 'OPTIONS', 'HEAD','DELETE'],
+  credentials: true
+};
+
+app.use(cors(corsOptions));
+// app.use(cors());
 app.use(cookieParser());
 
 

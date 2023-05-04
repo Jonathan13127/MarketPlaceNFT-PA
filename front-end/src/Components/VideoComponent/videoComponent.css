@@ -1,0 +1,13 @@
+#Video{
+    -webkit-box-shadow: 0px 4px 15px 0px #000000bd; 
+    box-shadow: 0px 4px 15px 0px #000000bd;
+}
+
+#Acheter, #Explorer{
+    height: 2rem;
+    background-color: #191D1E;
+    padding: 5px;
+    border-radius: 10px;
+    color: white;
+    font-size: 1em;
+}

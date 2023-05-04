@@ -20,7 +20,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-const whiteList = ["http://localhost:3000","https://localhost:3000"]
+const whiteList = ["http://localhost:3000","https://localhost:3000","http://192.168.1.86","http://localhost:3001","https://localhost:3001"]
 
 const corsOptions = {
   origin: function (origin, callback) {
@@ -30,7 +30,7 @@ const corsOptions = {
       callback(new Error('Not allowed by CORS'));
     }
   },
-  methods: ['POST', 'PUT', 'GET', 'OPTIONS', 'HEAD','DELETE'],
+  methods: ['POST', 'PUT', 'GET', 'OPTIONS','DELETE'],
   credentials: true
 };
 

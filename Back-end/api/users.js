@@ -60,6 +60,11 @@ router.post('/login', async function (req, res, next) {
 
 });
 
+/* PUT update informations user*/
+router.put('/update',auth,async function (req,res,next){
+
+});
+
 /* POST logout user*/
 router.post('/logout', auth, async function (req, res, next) {
   try {

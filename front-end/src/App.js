@@ -1,15 +1,10 @@
-import { Header } from './Components/Header/header'
-import { Home } from './Pages/Home'
-import { Login } from './Pages/Login/Login'
-import { Signin } from './Pages/Signin/Signin'
-import { Profile } from './Pages/Profile'
+import { Home, Login, Signup, Profile } from './Pages'
+import { Header } from './Components'
 import { Routes, Route } from 'react-router-dom';
-import { useState } from 'react'
-
 import '@rainbow-me/rainbowkit/styles.css';
 import {getDefaultWallets,RainbowKitProvider,darkTheme } from '@rainbow-me/rainbowkit';
 import { configureChains, createClient, WagmiConfig } from 'wagmi';
-import { mainnet, polygon, optimism, arbitrum } from 'wagmi/chains';
+import { mainnet, polygon, optimism, arbitrum, localhost } from 'wagmi/chains';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 
@@ -19,7 +14,7 @@ function App() {
 
 
   const { chains, provider } = configureChains(
-    [mainnet, polygon, optimism, arbitrum],
+    [mainnet, polygon, optimism, arbitrum, localhost],
     [
       // alchemyProvider({ apiKey: process.env.ALCHEMY_ID }),
       publicProvider()
@@ -33,14 +28,14 @@ function App() {
   });
 
   const wagmiClient = createClient({
-    autoConnect: false,
+    autoConnect: true,
     connectors,
     provider
   })
 
   return (
     <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider chains={chains} theme={darkTheme()}>
+      <RainbowKitProvider chains={chains}>
         <div className="w-100 h-100 overflow-x-hidden text-white">
 
           <Header />
@@ -48,7 +43,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/Login" element={<Login />} />
-            <Route path="/Signin" element={<Signin />} />
+            <Route path="/Signup" element={<Signup />} />
             <Route path="/Profile" element={<Profile />} />
           </Routes>
         </div>

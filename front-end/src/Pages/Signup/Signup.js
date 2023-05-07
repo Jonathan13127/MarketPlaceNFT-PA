@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 const bcrypt = require('bcryptjs');
 
 
-export const Signin = () =>{
+export const Signup = () =>{
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");

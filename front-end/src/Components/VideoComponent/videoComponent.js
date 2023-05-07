@@ -1,12 +1,12 @@
 import { FaShoppingCart, FaGlobe } from "react-icons/fa";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { BMW, Alfa, Toyota } from './Assets/video'
 
 import './videoComponent.css';
 
 export const VideoComponent = () => {
 
-  const Videos = [BMW, Alfa, Toyota];
+  const Videos = [ Alfa, BMW, Toyota];
 
   const [videoIndex, setVideoIndex] = useState(0)
 
@@ -17,9 +17,9 @@ export const VideoComponent = () => {
       setVideoIndex(videoIndex+1)
     }
   }
-
+  
   return (
-    <div id="Video" className='rounded-lg bg-[#767676] w-100 ml-8 mr-12 overflow-hidden relative'>
+    <div id="Video" className='rounded-lg bg-[#767676] w-100 ml-8 mr-8 overflow-hidden relative'>
 
       <video src={Videos[videoIndex]} className="w-full h-[400px] object-cover" onEnded={() => myCallback()} autoPlay muted ></video>
 
@@ -29,7 +29,7 @@ export const VideoComponent = () => {
         </div>
         <div className='w-100 flex space-x-9'>
 
-          <a href="/Buy">
+          <a href="#buy">
             <div id='Acheter' className='flex justify-center items-center space-x-3 w-32'>
               <FaShoppingCart size={23} />
               <button>Buy</button>

@@ -16,7 +16,7 @@ export const CarDetails = (props) => {
                     <p className="py-4">owner: {props.nft.owner}</p>
                     <figure><img src={Ferrari} alt="NFW" /></figure>
                     <div className="modal-action">
-                        <label htmlFor={props.nft.id} className="btn">Exit</label>
+                        <label htmlFor={props.nft.id} className="btn btn-primary">Exit</label>
                     </div>
                 </div>
 

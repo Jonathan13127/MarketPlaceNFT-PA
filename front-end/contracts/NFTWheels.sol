@@ -26,6 +26,7 @@ contract NFTWheels is ERC721, Ownable  {
         uint256 vitesseMax;
         uint256 price;
         string image;
+        bool isForSale;
     }
 
     mapping (uint => Car) private _CarDetails;
@@ -39,7 +40,7 @@ contract NFTWheels is ERC721, Ownable  {
     }
 
     function mint(string memory _marque, string memory _modele, uint _anne, uint _puissance, uint _vitesseMax, string memory _img) public onlyOwner{   
-        Car memory thisCar = Car(nextId, _marque, _modele, msg.sender ,_anne, _puissance, _vitesseMax, _DEFAULTPRICE, _img);
+        Car memory thisCar = Car(nextId, _marque, _modele, msg.sender ,_anne, _puissance, _vitesseMax, _DEFAULTPRICE, _img, false);
         _CarDetails[nextId] = thisCar;
         _safeMint(msg.sender,nextId);
         allNFTs.push(thisCar);
@@ -54,6 +55,37 @@ contract NFTWheels is ERC721, Ownable  {
         require(_exists(_tokenId), "Invalid token ID");
         Car memory thisCar = _CarDetails[_tokenId];
         return thisCar.price; 
+    }
+
+    function _sell(uint256 _tokenId) public returns(string memory){
+        require(_isApprovedOrOwner(msg.sender, _tokenId), "Caller is not owner nor approved");
+        require(!_CarDetails[_tokenId].isForSale, "NFT is already for sale");
+        _CarDetails[_tokenId].isForSale = true; // <= modifications dans le mapping
+        Car storage thisCar = allNFTs[_tokenId]; // <= modifications dans le array
+        thisCar.isForSale = true; 
+        return "Ici";
+    }
+
+    function removeFromSell(uint256 _tokenId) public {
+        require(_CarDetails[_tokenId].owner == ownerOf(_tokenId));
+        require(_CarDetails[_tokenId].isForSale, "NFT is not for sale");
+        _CarDetails[_tokenId].isForSale = false; // <= modifications dans le mapping
+        Car storage thisCar = allNFTs[_tokenId]; // <= modifications dans le array
+        thisCar.isForSale = false; 
+    }
+
+    function _buy(uint256 _tokenId) public payable {
+        Car storage thisCar = allNFTs[_tokenId]; // <= modifications dans le array
+        require(_CarDetails[_tokenId].isForSale, "NFT is not for sale");
+        require(msg.value == _CarDetails[_tokenId].price, "Incorrect payment amount");
+        address seller = ownerOf(_tokenId);
+        require(msg.sender != seller, "Owner can't sell NFT for himself");
+        _transfer(seller, msg.sender, _tokenId);
+        _CarDetails[_tokenId].isForSale = false;
+        _CarDetails[_tokenId].owner = msg.sender;
+        thisCar.isForSale = false;
+        thisCar.owner = msg.sender;
+        payable(seller).transfer(msg.value);
     }
 
     // function setNFTPrice(uint256 _tokenId, uint256 _newPrice) public {

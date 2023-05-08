@@ -4,7 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 import '@rainbow-me/rainbowkit/styles.css';
 import {getDefaultWallets,RainbowKitProvider,darkTheme } from '@rainbow-me/rainbowkit';
 import { configureChains, createClient, WagmiConfig } from 'wagmi';
-import { mainnet, polygon, optimism, arbitrum, localhost } from 'wagmi/chains';
+import { mainnet, polygon, optimism, arbitrum, localhost,sepolia } from 'wagmi/chains';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 
@@ -14,7 +14,7 @@ function App() {
 
 
   const { chains, provider } = configureChains(
-    [mainnet, polygon, optimism, arbitrum, localhost],
+    [mainnet, polygon, optimism, arbitrum, localhost, sepolia],
     [
       // alchemyProvider({ apiKey: process.env.ALCHEMY_ID }),
       publicProvider()
@@ -39,6 +39,8 @@ function App() {
         <div className="w-100 h-100 overflow-x-hidden text-white">
 
           <Header />
+
+          {/* <HeaderTailwind /> */}
 
           <Routes>
             <Route path="/" element={<Home />} />

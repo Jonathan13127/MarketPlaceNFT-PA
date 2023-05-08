@@ -1,5 +1,5 @@
 import './Header.css'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { FaSearch } from "react-icons/fa";
 import { useAccount } from 'wagmi'
 import { ConnectButton } from '@rainbow-me/rainbowkit';
@@ -8,28 +8,39 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 export const Header = (props) => {
 
-    const [walletAddress, setWalletAddress] = useState(null);
-    const { address, isConnecting,isConnected, isDisconnected } = useAccount()
+    const [searchTerm, setSearchTerm] = useState("");
+    const { isConnected } = useAccount();
+
+    useEffect(() => {
+
+    })
+
+    async function search(e) {
+        let input = e.target.value;
+    }
 
     return (
         <header className="w-full h-20 flex justify-between px-10 items-center fixed z-10">
 
-            <div className="w-7/12 flex items-center space-x-5 h-full">
+            <div className=" flex items-center space-x-5 h-full">
 
-                <a className='w-auto h-full p-3' href='/'>
-                    <img className='w-auto h-full' id="Logo" alt='Logo' src='/Assets/logo_blanc.svg' />
+                <a className='min-w-[150px] max-w-[150px] p-3' href='/'>
+                    <img className='' id="Logo" alt='Logo' src='/Assets/logo_blanc.svg' />
                 </a>
 
                 <div id="navigation" className="flex items-center space-x-3">
-                    <div className='w-auto flex items-center'>
-                        <input className='w-[32rem] relative' type='text' placeholder='Search something...' />
+                    <div className='w-auto md:flex items-center lg hidden'>
+                        <input className='w-auto relative' type='text' placeholder='Search something...' onChange={(e) => { setSearchTerm(e.target.value) }} />
                         <div id="loupe" className='ml-2 absolute'>
                             <FaSearch size={15} />
                         </div>
                     </div>
-                    <button>Explore</button>
-                    <button>Sell</button>
-                    <button>Play</button>
+                    <div className='lg:flex w-auto space-x-2 hidden'>
+                        <button>Explore</button>
+                        <button>Sell</button>
+                        <button>Play</button>
+                    </div>
+
                 </div>
 
             </div>

@@ -1,10 +1,9 @@
 require("@nomicfoundation/hardhat-toolbox");
 
-require("@nomicfoundation/hardhat-toolbox");
-
 require("dotenv").config();
 const SEPOLIA_RPC = process.env.SEPOLIA_RPC;
 const privateKey = process.env.PRIVATE_KEY;
+const alchemyPrivateKey= process.env.ALCHEMY_PRIVATE_KEY;
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -17,11 +16,11 @@ module.exports = {
       chainId:1337
     },
     sepolia: {
-      url: SEPOLIA_RPC,
+      url: SEPOLIA_RPC+alchemyPrivateKey,
       accounts: [privateKey],
       chainId: 11155111,
     }
   },     
-  gas: 2100000,
+  gas: 21000000,
   gasPrice: 8000000000
 };

@@ -19,11 +19,11 @@ export const VideoComponent = () => {
   }
   
   return (
-    <div id="Video" className='rounded-lg bg-[#767676] w-100 ml-8 mr-8 overflow-hidden relative'>
+    <div id="Video" className='rounded-lg bg-[#767676] w-100 ml-8 mr-8 overflow-hidden relative hidden lg:block'>
 
       <video src={Videos[videoIndex]} className="w-full h-[400px] object-cover" onEnded={() => myCallback()} autoPlay muted ></video>
 
-      <div className='absolute top-24 left-32 h-[15rem] flex flex-col space-y-24'>
+      <div className='absolute flex top-24 left-32 h-[15rem] flex-col space-y-24'>
         <div>
           <h1 className='text-white text-4xl font-bold z-10	'>Découvrez notre incroyable<br />collection NFTWheels</h1>
         </div>

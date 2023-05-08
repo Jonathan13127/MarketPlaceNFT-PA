@@ -26,7 +26,7 @@ async function main() {
   // Faire un Json contenant des objet Car prêt aêtre minter
 
 
-  for(let i = 0; i<21;i+=1){
+  for(let i = 0; i<10;i+=1){
 
     await nFTWheels.connect(owner).mint("ALFAROMEO", `MITO ${i}`, 2010, 120+i, 210, "");
     console.log(`${i} NFT successfully deployed.`);

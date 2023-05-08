@@ -31,9 +31,7 @@ contract NFTWheels is ERC721, Ownable  {
 
     mapping (uint => Car) private _CarDetails;
 
-    constructor(string memory name_,string memory symbol_) ERC721(name_,symbol_){
-        
-    }
+    constructor(string memory name_,string memory symbol_) ERC721(name_,symbol_){}
 
     function getAllNFTs()public view returns(Car[] memory){
         return allNFTs;
@@ -49,6 +47,10 @@ contract NFTWheels is ERC721, Ownable  {
 
     function getOwnerOf(uint256 _tokenId)public view returns(address){
         return ownerOf(_tokenId);
+    }
+
+    function getOwner()public view returns(address){
+        return owner();
     }
 
     function getNFTPrice(uint256 _tokenId) public view returns (uint256) {

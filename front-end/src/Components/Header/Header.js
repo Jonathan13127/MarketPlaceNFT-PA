@@ -1,19 +1,32 @@
 import './Header.css'
 import { useState, useEffect } from 'react'
 import { FaSearch } from "react-icons/fa";
+import NFTWheels from '../../artifacts/contracts/NFTWheels.sol/NFTWheels.json';
 import { useAccount } from 'wagmi'
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-
+import { NFTWheelsAddress } from "../../NFTWheels.address"
+const ethers = require("ethers")
 
 
 export const Header = (props) => {
 
-    const [searchTerm, setSearchTerm] = useState("");
-    const { isConnected } = useAccount();
+    const [owner, setOwner] = useState("");
+    const { isConnected,address } = useAccount();
 
     useEffect(() => {
+        getOwner();
+    },[])
 
-    })
+    async function getOwner(){
+        if (isConnected) {
+            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            const contract = new ethers.Contract(NFTWheelsAddress, NFTWheels.abi, provider);
+            const data = await contract.getOwner({ from: accounts[0] });
+            console.log(data.toString())
+            setOwner(data.toString())
+        }
+    }
 
     async function search(e) {
         let input = e.target.value;
@@ -30,7 +43,7 @@ export const Header = (props) => {
 
                 <div id="navigation" className="flex items-center space-x-3">
                     <div className='w-auto md:flex items-center lg hidden'>
-                        <input className='w-auto relative' type='text' placeholder='Search something...' onChange={(e) => { setSearchTerm(e.target.value) }} />
+                        <input className='w-auto relative' type='text' placeholder='Search something...' onChange={()=>{}} />
                         <div id="loupe" className='ml-2 absolute'>
                             <FaSearch size={15} />
                         </div>
@@ -38,7 +51,10 @@ export const Header = (props) => {
                     <div className='lg:flex w-auto space-x-2 hidden'>
                         <button>Explore</button>
                         <button>Sell</button>
-                        <button>Play</button>
+                        <button>Bid</button>
+                        {address == owner &&
+                            <button>Mint</button>
+                        }
                     </div>
 
                 </div>

@@ -104,6 +104,11 @@ export const Card = () => {
                                             Indisponible
                                         </div>
                                     }
+                                    {nft.owner == address &&
+                                        <div className="badge badge-accent">
+                                            Owner
+                                        </div>
+                                    }
                                     {nft.isForSale &&
                                         <div className="badge badge-secondary">
                                             Disponible

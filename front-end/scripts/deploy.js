@@ -25,6 +25,7 @@ async function main() {
 
   // Faire un Json contenant des objet Car prêt aêtre minter
 
+  console.log("NFTWheels deployed to:", nFTWheels.address);
 
   for(let i = 0; i<10;i+=1){
 
@@ -33,7 +34,6 @@ async function main() {
 
   }
 
-  console.log("NFTWheels deployed to:", nFTWheels.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

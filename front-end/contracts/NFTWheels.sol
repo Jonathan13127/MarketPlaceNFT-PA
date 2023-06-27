@@ -30,12 +30,26 @@ contract NFTWheels is ERC721, Ownable  {
     }
 
     mapping (uint => Car) private _CarDetails;
+    mapping (address => bool) private userMint; // Map if an user has already minted a nft
+
 
     constructor(string memory name_,string memory symbol_) ERC721(name_,symbol_){}
 
     function getAllNFTs()public view returns(Car[] memory){
         return allNFTs;
     }
+
+    function getAllNFTsAvailable()public view returns(Car[] memory){
+        Car[] memory allNFTsAvailable = new Car[](allNFTs.length);
+        address owner = owner();
+        for(uint i = 0; i < allNFTs.length; i+=1){
+            if(allNFTs[i].owner == owner){
+                allNFTsAvailable[i] = allNFTs[i];
+            }
+        }
+        return allNFTsAvailable;
+    }
+
 
     function mint(string memory _marque, string memory _modele, uint _anne, uint _puissance, uint _vitesseMax, string memory _img) public onlyOwner{   
         Car memory thisCar = Car(nextId, _marque, _modele, msg.sender ,_anne, _puissance, _vitesseMax, _DEFAULTPRICE, _img, false);

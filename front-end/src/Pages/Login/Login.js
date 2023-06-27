@@ -1,9 +1,12 @@
 import './Login.css'
 import { useState } from 'react';
+import { urlBase } from "../../Informations"
+
 import { useNavigate } from "react-router-dom";
+import TextField from '@mui/material/TextField';
 
 
-export const Login = () =>{
+export const Login = () => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -23,7 +26,7 @@ export const Login = () =>{
 
         const data = { email: email, password: password };
 
-        var url = "http://localhost:5000/users/login";
+        var url = urlBase+"users/login";
 
         const response = await fetch(url, {
             method: "POST", // *GET, POST, PUT, DELETE, etc.
@@ -33,7 +36,7 @@ export const Login = () =>{
             headers: {
                 "Content-Type": "application/json",
                 'Accept': 'application/json',
-                'Access-Control-Allow-Origin' : '*',
+                'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Headers': 'Content-Type'
             },
             redirect: "follow", // manual, *follow, error
@@ -49,7 +52,7 @@ export const Login = () =>{
                     userNot.classList.add("hidden");
                     userNot = document.getElementById("user");
                     userNot.classList.remove("hidden")
-                    navigate('/Profile')             
+                    navigate('/Profile')
 
                 } else if (response.status === 400) {
                     console.log(data.response)
@@ -59,17 +62,15 @@ export const Login = () =>{
         }).catch(err => console.log(err));
     }
 
-    return(
+    return (
         <main className='App w-screen h-screen mt-24 flex justify-center items-center w-1/2'>
             <form onSubmit={Connexion} className="flex flex-col h-fit w-2/5 space-y-3 p-8">
                 <h2 className="text-2xl text-center	">Log in</h2>
                 <div className="flex flex-col">
-                    <label>Email Address</label>
-                    <input id='input' className="text-black" type="email" onChange={handleEmailChange} />
+                    <TextField sx={{ input: { color: 'white' }, label : {color:'white'} }} id="standard-basic" label="Email Address" variant="standard" onChange={handleEmailChange} type='email' />
                 </div>
                 <div className="flex flex-col">
-                    <label>Password</label>
-                    <input id='input' className="text-black" type="password" onChange={handlePasswordChange} />
+                    <TextField sx={{ input: { color: 'white' }, label : {color:'white'} }} id="standard-basic" label="Password" variant="standard" onChange={handlePasswordChange} type='password' />
                 </div>
                 <button className="bg-black text-white" type="submit" id="submit">Log in</button>
             </form>

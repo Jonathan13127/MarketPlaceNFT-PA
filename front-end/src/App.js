@@ -1,4 +1,4 @@
-import { Home, Login, Signup, Profile } from './Pages'
+import { Home, Login, Signup, Profile,Mint } from './Pages'
 import { Header } from './Components'
 import { Routes, Route } from 'react-router-dom';
 import '@rainbow-me/rainbowkit/styles.css';
@@ -36,18 +36,18 @@ function App() {
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains}>
-        <div className="w-100 h-100 overflow-x-hidden text-white">
+        <div className="w-full h-full overflow-x-hidden text-white">
 
           <Header />
-
-          {/* <HeaderTailwind /> */}
 
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/Login" element={<Login />} />
             <Route path="/Signup" element={<Signup />} />
             <Route path="/Profile" element={<Profile />} />
+            <Route path="/Mint" element={<Mint />} />
           </Routes>
+
         </div>
       </RainbowKitProvider>
     </WagmiConfig>

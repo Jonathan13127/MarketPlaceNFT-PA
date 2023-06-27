@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { urlBase } from "../../Informations"
+import TextField from '@mui/material/TextField';
+
 
 const bcrypt = require('bcryptjs');
 
 
-export const Signup = () =>{
+export const Signup = () => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -31,7 +34,7 @@ export const Signup = () =>{
 
         const data = { username: username, email: email, password: hashedPassword };
 
-        var url = "http://localhost:5000/users/register";
+        var url = urlBase+"users/register";
 
         const response = await fetch(url, {
             method: "POST", // *GET, POST, PUT, DELETE, etc.
@@ -64,25 +67,21 @@ export const Signup = () =>{
         }).catch(err => console.log(err));
     }
 
-    return(
+    return (
         <main className='App w-screen h-screen mt-24 flex justify-center items-center w-1/2'>
             <form onSubmit={Inscription} className="flex flex-col h-fit w-2/5 space-y-3 p-8">
                 <h2 className="text-2xl text-center	">Sign in</h2>
                 <div className="flex flex-col">
-                    <label>Username</label>
-                    <input id='input' className="text-black" type="text" onChange={handleUsernameChange} />
+                    <TextField sx={{ input: { color: 'white' }, label: { color: 'white' } }} id="standard-basic" label="Username" variant="standard" onChange={handleUsernameChange} type='text' />
                 </div>
                 <div className="flex flex-col">
-                    <label>Email Address</label>
-                    <input id='input' className="text-black" type="email" onChange={handleEmailChange} />
+                    <TextField sx={{ input: { color: 'white' }, label: { color: 'white' } }} id="standard-basic" label="Email Address" variant="standard" onChange={handleEmailChange} type='email' />
                 </div>
                 <div className="flex flex-col">
-                    <label>Password</label>
-                    <input id='input' className="text-black" type="password" onChange={handlePasswordChange} />
+                    <TextField sx={{ input: { color: 'white' }, label: { color: 'white' } }} id="standard-basic" label="Password" variant="standard" onChange={handlePasswordChange} type='password' />
                 </div>
                 <button className="bg-black text-white" type="submit" id="submit">Sign in</button>
             </form>
-
         </main>
     )
 }

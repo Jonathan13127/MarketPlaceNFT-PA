@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import NFTWheels from '../../artifacts/contracts/NFTWheels.sol/NFTWheels.json';
 import { Ferrari } from './Assets';
-import { NFTWheelsAddress } from "../../NFTWheels.address"
+import { NFTWheelsAddress } from "../../Informations"
 import { ContractResultDecodeError, useAccount } from 'wagmi'
 import { CarDetails } from '../CarDetails';
 import { FaEthereum } from 'react-icons/fa';
@@ -16,7 +16,7 @@ export const Card = () => {
 
     useEffect(() => {
         getAllNFTs();
-    }, [])
+    }, [isConnected])
 
     async function getAllNFTs() {
         if (isConnected) {

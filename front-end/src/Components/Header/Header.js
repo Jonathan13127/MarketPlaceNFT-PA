@@ -4,20 +4,20 @@ import { FaSearch } from "react-icons/fa";
 import NFTWheels from '../../artifacts/contracts/NFTWheels.sol/NFTWheels.json';
 import { useAccount } from 'wagmi'
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { NFTWheelsAddress } from "../../NFTWheels.address"
+import { NFTWheelsAddress } from "../../Informations"
 const ethers = require("ethers")
 
 
 export const Header = (props) => {
 
     const [owner, setOwner] = useState("");
-    const { isConnected,address } = useAccount();
+    const { isConnected, address } = useAccount();
 
     useEffect(() => {
         getOwner();
-    },[])
+    }, [])
 
-    async function getOwner(){
+    async function getOwner() {
         if (isConnected) {
             const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
             const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -43,18 +43,16 @@ export const Header = (props) => {
 
                 <div id="navigation" className="flex items-center space-x-3">
                     <div className='w-auto md:flex items-center lg hidden'>
-                        <input className='w-auto relative' type='text' placeholder='Search something...' onChange={()=>{}} />
+                        <input className='w-auto relative' type='text' placeholder='Search something...' onChange={() => { }} />
                         <div id="loupe" className='ml-2 absolute'>
                             <FaSearch size={15} />
                         </div>
                     </div>
                     <div className='lg:flex w-auto space-x-2 hidden'>
-                        <button>Explore</button>
-                        <button>Sell</button>
-                        <button>Bid</button>
-                        {address == owner &&
-                            <button>Mint</button>
-                        }
+                        <a>Explore</a>
+                        <a>Sell</a>
+                        <a>Bid</a>
+                        <a href="/Mint">Mint</a>
                     </div>
 
                 </div>

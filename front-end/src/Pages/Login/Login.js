@@ -11,6 +11,7 @@ export const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
+    const [message, setMessage] = useState('')
 
 
     const handleEmailChange = (e) => {
@@ -48,7 +49,9 @@ export const Login = () => {
                 if (response.status === 200) {
 
                     console.log(data.response.message)
+                    setMessage(data.response.message)
                     var userNot = document.getElementById("userNot");
+                    console.log(userNot)
                     userNot.classList.add("hidden");
                     userNot = document.getElementById("user");
                     userNot.classList.remove("hidden")
@@ -56,6 +59,7 @@ export const Login = () => {
 
                 } else if (response.status === 400) {
                     console.log(data.response)
+                    setMessage(data.response.message)
                 }
 
             }).catch(err => console.log(err));
@@ -74,7 +78,11 @@ export const Login = () => {
                 </div>
                 <button className="bg-black text-white" type="submit" id="submit">Log in</button>
             </form>
-
+            {message &&
+            <div>
+                {message}
+            </div>
+            }
         </main>
     )
 }

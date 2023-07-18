@@ -1,5 +1,5 @@
 import { Home, Login, Signup, Profile,Mint } from './Pages'
-import { Header } from './Components'
+import { Header,Footer } from './Components'
 import { Routes, Route } from 'react-router-dom';
 import '@rainbow-me/rainbowkit/styles.css';
 import {getDefaultWallets,RainbowKitProvider,darkTheme } from '@rainbow-me/rainbowkit';
@@ -47,7 +47,7 @@ function App() {
             <Route path="/Mint" element={<Mint />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
-
+          <Footer/>
         </div>
       </RainbowKitProvider>
     </WagmiConfig>

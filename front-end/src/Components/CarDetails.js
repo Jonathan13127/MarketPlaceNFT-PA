@@ -1,4 +1,33 @@
+import {useAccount} from "wagmi";
+import {useState} from "react";
+import {NFTWheelsAddress} from "../Informations";
+import NFTWheels from "../artifacts/contracts/NFTWheels.sol/NFTWheels.json";
+
+const ethers = require("ethers")
+
+
 export const CarDetails = (props) => {
+
+    const { isConnected, address } = useAccount()
+
+    const [price, setPrice] =useState(0)
+
+
+    const handlePrice = (e) =>{
+        setPrice(e.target.value)
+    }
+
+    const changePrice = async (e, id) => {
+        e.preventDefault()
+        if (isConnected) {
+            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            const signer = provider.getSigner();
+            const contract = new ethers.Contract(NFTWheelsAddress, NFTWheels.abi, signer);
+            const transaction = await contract.changePrice(ethers.utils.parseEther(price), id, { from: accounts[0]});
+            await transaction.wait();
+        }
+    }
 
     return (
 
@@ -15,6 +44,14 @@ export const CarDetails = (props) => {
                     <div className="modal-action">
                         <label htmlFor={props.nft.id} className="btn btn-primary">Exit</label>
                     </div>
+                    {address === props.nft.owner && props.nft.isForSale === false &&
+                        <div>
+                            <form onSubmit={(e)=>changePrice(e,props.nft.id)}>
+                                <input type="number" value={price} onChange={handlePrice}/>
+                                <button type="submit" className="btn btn-primary">Update Price</button>
+                            </form>
+                        </div>
+                    }
                 </div>
 
             </div>

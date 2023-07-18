@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import NFTWheels from '../../artifacts/contracts/NFTWheels.sol/NFTWheels.json';
 import NFWS from '../../artifacts/contracts/NFWS.sol/NFWS.json'
-import {bmwM4, Ferrari} from './Assets';
 import { NFTWheelsAddress } from "../../Informations"
 import { ContractResultDecodeError, useAccount } from 'wagmi'
 import { CarDetails } from '../CarDetails';
@@ -45,7 +44,7 @@ export const Card = () => {
             const provider = new ethers.providers.Web3Provider(window.ethereum);
             const signer = provider.getSigner();
             const contract = new ethers.Contract(NFTWheelsAddress, NFTWheels.abi, signer);
-            const transaction = await contract._buy(id, { from: accounts[0], value: price });
+            const transaction = await contract._buy(id, { from: accounts[0], value: price, gasLimit:5000000 });
             await transaction.wait();
             getAllNFTs();
         }
@@ -140,7 +139,9 @@ export const Card = () => {
                                         <button onClick={() => { removeSellNFT(nft.id) }} className="btn btn-primary">Remove From Sell</button>
                                     }
                                     {address == nft.owner && nft.isForSale == false &&
-                                        <button onClick={() => { sellNFT(nft.id) }} className="btn btn-primary">Sell Now</button>
+                                        <div>
+                                            <button onClick={() => { sellNFT(nft.id) }} className="btn btn-primary">Sell Now</button>
+                                        </div>
                                     }
                                     <label htmlFor={nft.id.toString()} className="btn btn-primary">See NFT</label>
 

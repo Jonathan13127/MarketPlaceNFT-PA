@@ -1,5 +1,5 @@
 //export const NFTWheelsAddress = "0x463B26c14471BC56e4Ab570A6B968041F844eE1a"
-export const NFTWheelsAddress = "0xA4d5580f12cbE28A5795362Bc2898141fE3e92F0"
+export const NFTWheelsAddress = "0xC0e36d1846199404b22235425f518eC1Df575396"
 export const NFWSAddress = "0x78f6Fc9989c5Da91C98f6EE3003FEd57553aA242"
 export const urlBase = "http://localhost:5000/"
 export const addressOwner = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"

@@ -13,6 +13,8 @@ export const Signup = () => {
     const [password, setPassword] = useState("");
     const [username, setUsername] = useState("");
     const navigate = useNavigate();
+    const [message, setMessage] = useState('')
+
 
     const handleEmailChange = (e) => {
         setEmail(e.target.value);
@@ -30,9 +32,7 @@ export const Signup = () => {
     async function Inscription(e) {
         e.preventDefault();
 
-        const hashedPassword = await bcrypt.hash(password, 13);
-
-        const data = { username: username, email: email, password: hashedPassword };
+        const data = { username: username, email: email, password: password };
 
         var url = urlBase+"users/register";
 
@@ -44,7 +44,6 @@ export const Signup = () => {
                 "Content-Type": "application/json",
                 'Accept': 'application/json'
             },
-            credentials: 'include',
             redirect: "follow", // manual, *follow, error
             referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
             body: JSON.stringify(data), // body data type must match "Content-Type" header
@@ -53,7 +52,9 @@ export const Signup = () => {
                 if (response.status === 200) {
 
                     console.log(data.response.message)
+                    setMessage(data.response.message)
                     var userNot = document.getElementById("userNot")
+                    userNot.
                     userNot.classList.add("hidden");
                     userNot = document.getElementById("user");
                     userNot.classList.remove("hidden")

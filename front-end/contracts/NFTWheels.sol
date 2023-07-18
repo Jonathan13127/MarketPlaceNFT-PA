@@ -51,7 +51,7 @@ contract NFTWheels is ERC721URIStorage, Ownable  {
                 allNFTsAvailable[i] = allNFTs[i];
             }
         }
-        return allNFTsAvailable;
+        return allNFTs;
     }
 
 
@@ -107,6 +107,15 @@ contract NFTWheels is ERC721URIStorage, Ownable  {
         thisCar.isForSale = false;
         thisCar.owner = msg.sender;
         payable(seller).transfer(msg.value);
+    }
+
+    function changePrice(uint256 newPrice, uint256 _tokenId) public payable{
+        Car storage thisCar = allNFTs[_tokenId]; // <= modifications dans le array
+        thisCar.price =  newPrice;
+    }
+
+    function sendNFT(uint256 token)public payable{
+
     }
 
 }

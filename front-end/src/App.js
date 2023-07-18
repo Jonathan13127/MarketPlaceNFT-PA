@@ -5,13 +5,12 @@ import '@rainbow-me/rainbowkit/styles.css';
 import {getDefaultWallets,RainbowKitProvider,darkTheme } from '@rainbow-me/rainbowkit';
 import { configureChains, createClient, WagmiConfig } from 'wagmi';
 import { mainnet, polygon, optimism, arbitrum, localhost,sepolia } from 'wagmi/chains';
-import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 
 import './App.css';
+import NotFound from "./Components/NotFound/NotFound";
 
 function App() {
-
 
   const { chains, provider } = configureChains(
     [mainnet, polygon, optimism, arbitrum, localhost, sepolia],
@@ -46,6 +45,7 @@ function App() {
             <Route path="/Signup" element={<Signup />} />
             <Route path="/Profile" element={<Profile />} />
             <Route path="/Mint" element={<Mint />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
 
         </div>

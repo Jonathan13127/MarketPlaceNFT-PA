@@ -1,6 +1,5 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
-
 const { loadFixture } = require("@nomicfoundation/hardhat-network-helpers");
 
 describe("NFTWheels contract", function () {
@@ -12,25 +11,28 @@ describe("NFTWheels contract", function () {
       const NFTWheels = await ethers.getContractFactory("NFTWheels");
       const [owner, addr1, addr2, addr3] = await ethers.getSigners();
   
-      const hardNFTWheels = await NFTWheels.deploy("NFTWheels", "NFW");
+      const hardNFTWheels = await NFTWheels.deploy("0x674c6f59d8A62b67618A3B2200e67399F01d9c5e");
   
       await hardNFTWheels.deployed();
   
       const amount = "1";
 
-      const img = "";
-  
-      // Fixtures can return anything you consider useful for your tests
-      return { NFTWheels, hardNFTWheels, owner, addr1, addr2, addr3, amount, img };
+      const metadatas = require("../nft-wheels.json");
+      const stringifiedData = JSON.stringify(metadatas);
+      const parsedData = JSON.parse(stringifiedData);
+
+
+        // Fixtures can return anything you consider useful for your tests
+      return { NFTWheels, hardNFTWheels, owner, addr1, addr2, addr3, amount, parsedData };
     }
   
     // You can nest describe calls to create subsections.
     describe("Deployment", function () {
 
       it("Should mint 1 NFT", async function(){
-        const { hardNFTWheels, owner, addr1, amount, img} = await loadFixture(deployNFTWheelsFixture);
+        const { hardNFTWheels, owner, addr1, amount, parsedData} = await loadFixture(deployNFTWheelsFixture);
 
-        await hardNFTWheels.connect(owner).mint("ALFAROMEO", "MITO", 2010, 120,210, img);
+        await hardNFTWheels.connect(owner).mint(parsedData[0].name, 10,parsedData[0].uri);
       });
     }); 
 
@@ -38,11 +40,12 @@ describe("NFTWheels contract", function () {
     describe("Sell / Buy / GET Price of a NFT", function () {
 
         it("Should get price of a NFT", async function(){
-            const { hardNFTWheels, owner, addr1, amount, img} = await loadFixture(deployNFTWheelsFixture);
+            const { hardNFTWheels, owner, addr1, amount, parsedData} = await loadFixture(deployNFTWheelsFixture);
 
-            await hardNFTWheels.connect(owner).mint("ALFAROMEO", "MITO", 2010, 120, 210, img);
-      
-            console.log(await hardNFTWheels.connect(owner).getNFTPrice(0));
+            await hardNFTWheels.connect(owner).mint(parsedData[0].name, 10,parsedData[0].uri);
+            await hardNFTWheels.connect(owner).mint(parsedData[1].name, 10,parsedData[1].uri);
+
+            console.log(await hardNFTWheels.connect(owner).getAllNFTs());
               // expect(await hardNFTWheels.connect(owner).getCarforSell().length).equal(1)
         });
     });

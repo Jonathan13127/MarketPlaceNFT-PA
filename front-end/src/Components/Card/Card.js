@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import NFTWheels from '../../artifacts/contracts/NFTWheels.sol/NFTWheels.json';
-import { Ferrari } from './Assets';
+import NFWS from '../../artifacts/contracts/NFWS.sol/NFWS.json'
+import {bmwM4, Ferrari} from './Assets';
 import { NFTWheelsAddress } from "../../Informations"
 import { ContractResultDecodeError, useAccount } from 'wagmi'
 import { CarDetails } from '../CarDetails';
 import { FaEthereum } from 'react-icons/fa';
+import axios from "axios";
 
 const ethers = require("ethers")
-
 
 export const Card = () => {
 
@@ -19,11 +20,12 @@ export const Card = () => {
     }, [isConnected])
 
     async function getAllNFTs() {
-        if (isConnected) {
+        if (isConnected === true) {
             const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
             const provider = new ethers.providers.Web3Provider(window.ethereum);
             const contract = new ethers.Contract(NFTWheelsAddress, NFTWheels.abi, provider);
             const data = await contract.getAllNFTs({ from: accounts[0] });
+            console.log(data)
             var listeNftsRecu = [];
             for (var i = 0; i < data.length; i++) {
                 listeNftsRecu.push(await deserialize(data[i]));
@@ -31,14 +33,13 @@ export const Card = () => {
             try {
                 setAllNfts(listeNftsRecu);
             } catch (err) {
-                console.log(err);
+                //console.log(err);
             }
         }
         console.log(nfts)
     }
 
     async function buyNFT(id, price) {
-        console.log(id);
         if (isConnected) {
             const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
             const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -77,12 +78,18 @@ export const Card = () => {
 
     async function deserialize(objet) {
 
+        const response = await axios.get(objet.metadataURI.toString())
+        const data = response.data
+
         const newObjet = {
-            id: objet.id.toString(), marque: objet.marque.toString(), modele: objet.modele, owner: objet.owner,
-            image: objet.image, vitesseMax: objet.vitesseMax.toString(),
-            price: objet.price.toString(), puissance: objet.puissance.toString(),
-            isForSale: objet.isForSale
+            id: objet.id.toString(),name:data.name,img:data.image,
+            owner: objet.owner,
+            puissance:data.attributes[3].puissance,
+            vitesseMax:data.attributes[4].vitesseMax,
+            price:objet.price.toString(),
+            isForSale:objet.isForSale
         }
+        console.log("Dese", newObjet)
 
         return newObjet;
     }
@@ -94,10 +101,10 @@ export const Card = () => {
                 nfts.map(nft =>
                     <div key={nft.id.toString()} className='mt-3 mx-3'>
                         <div className="card card-compact w-96 bg-[#656C6D] shadow-xl text-white">
-                            <figure><img src={Ferrari} alt="NFW" /></figure>
+                            <figure><img src={nft.img} alt="NFW" /></figure>
                             <div className="card-body flex align-center">
                                 <h2 className="card-title">
-                                    {nft.marque} - {nft.modele}
+                                    {nft.name}
 
                                     {!nft.isForSale && nft.owner != address &&
                                         <div className="badge badge-primary">
@@ -123,7 +130,7 @@ export const Card = () => {
                                 <div className="card-actions justify-end">
 
                                     <p className=' w-1 flex justify-center align-center text-5xl text-black'>
-                                        {nft.price / 10 ** 18}<FaEthereum size={50} />
+                                        {nft.price/10**18}<FaEthereum size={50} />
                                     </p>
 
                                     {address != nft.owner && nft.isForSale == true &&

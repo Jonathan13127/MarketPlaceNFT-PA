@@ -4,34 +4,34 @@
 // When running the script with `npx hardhat run <script>` you'll find the Hardhat
 // Runtime Environment's members available in the global scope.
 const hre = require("hardhat");
-
-
 async function main() {
-  // Hardhat always runs the compile task when running scripts with its command
-  // line interface.
-  //
-  // If this script is run directly using `node` you may want to call compile
-  // manually to make sure everything is compiled
-  // await hre.run('compile');
+
+  const Token = await hre.ethers.getContractFactory("NFWS")
+  const token = await Token.deploy()
+  console.log(token.address)
+
 
   // We get the contract to deploy
   const NFTWheels = await hre.ethers.getContractFactory("NFTWheels");
-  const nFTWheels = await NFTWheels.deploy("NFTWheels", "NFW");
+  const nFTWheels = await NFTWheels.deploy(token.address);
+  const metadatas = require("../nft-wheels.json")
 
   const [owner, addr1, addr2, addr3] = await ethers.getSigners();
 
-
   await nFTWheels.deployed();
 
-  // Faire un Json contenant des objet Car prêt aêtre minter
+  const stringifiedData = JSON.stringify(metadatas);
+  const parsedData = JSON.parse(stringifiedData);
+  console.log(parsedData)
+
 
   console.log("NFTWheels deployed to:", nFTWheels.address);
+  console.log(parsedData.length)
 
-  for(let i = 0; i<10;i+=1){
-
-    await nFTWheels.connect(owner).mint("ALFAROMEO", `MITO ${i}`, 2010, 120+i, 210, "");
-    console.log(`${i} NFT successfully deployed.`);
-
+  for (let i = 0; i < parsedData.length; i++) {
+    const price = ethers.utils.parseEther('1')
+    await nFTWheels.connect(owner).mint(parsedData[i].name, price,parsedData[i].uri);
+    console.log(`${parsedData[i].name} NFT successfully deployed.`);
   }
 
 }

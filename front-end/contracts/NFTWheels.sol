@@ -1,41 +1,45 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 import "hardhat/console.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 
-contract NFTWheels is ERC721, Ownable  {
-
-    enum Marque { ALFAROMEO }
-    enum Modele { MITO, GULIA }
+contract NFTWheels is ERC721URIStorage, Ownable  {
 
     uint nextId = 0;
 
-    uint256 _DEFAULTPRICE = 1 ether; // En WEI
-
     Car[] allNFTs;
+
+    uint256 private feePercentage = 2;
 
     struct Car{
         uint id;
-        string marque;
-        string modele;
+        string name;
         address owner;
-        uint256 anne;
-        uint256 puissance;
-        uint256 vitesseMax;
         uint256 price;
-        string image;
+        string metadataURI;
         bool isForSale;
     }
 
     mapping (uint => Car) private _CarDetails;
     mapping (address => bool) private userMint; // Map if an user has already minted a nft
+    IERC20 private _erc20Token;
 
+    constructor(address erc20TokenAddress) ERC721("NFT Wheels", "NFWS") {
+        _erc20Token = IERC20(erc20TokenAddress);
+    }
 
-    constructor(string memory name_,string memory symbol_) ERC721(name_,symbol_){}
 
     function getAllNFTs()public view returns(Car[] memory){
+        Car[] memory allMetadata = new Car[](nextId);
+
+        for (uint256 i = 0; i < nextId; i++) {
+            Car storage nft = allNFTs[i];
+            allMetadata[i] = nft;
+        }
+
         return allNFTs;
     }
 
@@ -51,11 +55,12 @@ contract NFTWheels is ERC721, Ownable  {
     }
 
 
-    function mint(string memory _marque, string memory _modele, uint _anne, uint _puissance, uint _vitesseMax, string memory _img) public onlyOwner{   
-        Car memory thisCar = Car(nextId, _marque, _modele, msg.sender ,_anne, _puissance, _vitesseMax, _DEFAULTPRICE, _img, false);
+    function mint(string memory name,uint price, string memory metadataURI) public onlyOwner{
+        Car memory thisCar = Car(nextId, name, msg.sender , price, metadataURI, false);
         _CarDetails[nextId] = thisCar;
         _safeMint(msg.sender,nextId);
         allNFTs.push(thisCar);
+        _setTokenURI(nextId, metadataURI);
         nextId++;
     }
 
@@ -104,16 +109,4 @@ contract NFTWheels is ERC721, Ownable  {
         payable(seller).transfer(msg.value);
     }
 
-    // function setNFTPrice(uint256 _tokenId, uint256 _newPrice) public {
-    //     address owner = ownerOf(_tokenId);
-    //     require(msg.sender == owner, "You must be the owner of the NFT to cancel the sale");
-    //     require(_exists(_tokenId), "Invalid token ID");
-    //     Car storage thisCar = _CarDetails[_tokenId];
-    //     thisCar.price = _newPrice;
-    // }
-
-    function setDefaultPrice(uint256 _newPrice)public onlyOwner returns(uint256){
-        _DEFAULTPRICE = _newPrice;
-        return _DEFAULTPRICE;
-    }
 }
